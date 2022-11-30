@@ -1,5 +1,5 @@
 # Stopwatch
-> made this for fun
+> node.js terminal stopwatch
 
 ## Install
 
