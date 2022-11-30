@@ -1,0 +1,17 @@
+{
+  "name": "stopwatch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/stopwatch.js",
+  "scripts": {
+    "start": "tsc src/main.ts --outFile bin/stopwatch.js && node bin/stopwatch.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9"
+  }
+}
