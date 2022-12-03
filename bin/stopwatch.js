@@ -1,6 +1,6 @@
 const readline = require('readline')
 
-const UPDATE_INTERVAL = 20
+const UPDATE_INTERVAL = 50
 
 let interval
 let startTime
@@ -35,12 +35,18 @@ function cleanUp() {
   startTime = null
 }
 
+function formatTime(totalSeconds) {
+  const mins = Math.floor(totalSeconds / 60)
+  const secs = totalSeconds - (mins * 60)
+  return `${mins ? mins + 'm ' : ''}${secs.toFixed(2)}s`
+}
+
 function outputTime() {
   if (!startTime) startTime = new Date()
   const secs = ((new Date()).getTime() - startTime.getTime()) / 1000
   process.stdout.clearLine(0)
   process.stdout.cursorTo(0)
-  process.stdout.write(`${secs.toFixed(2)}s`)
+  process.stdout.write(formatTime(secs))
 }
 
 async function run() {

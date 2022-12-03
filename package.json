@@ -4,14 +4,10 @@
   "description": "",
   "main": "bin/stopwatch.js",
   "scripts": {
-    "start": "tsc src/main.ts --outFile bin/stopwatch.js && node bin/stopwatch.js"
+    "start": "node bin/stopwatch.js"
   },
-  "author": "",
+  "author": "Andrew Kennedy <akennedy2292@gmail.com>",
   "license": "ISC",
-  "dependencies": {
-    "typescript": "^4.9.3"
-  },
-  "devDependencies": {
-    "@types/node": "^18.11.9"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

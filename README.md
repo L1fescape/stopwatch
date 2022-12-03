@@ -1,36 +1,21 @@
 # Stopwatch
-> node.js terminal stopwatch
+> terminal stopwatch written in node.js
 
-## Install
+## Dependencies
 
-```
-$ npm install
-```
+- Node.js
 
-## Build and Run
+## Usage
+
+Start the program with:
 
 ```
 $ npm start
 ```
+
+Press the "Enter" key to start the timer. Press "Enter" again to stop. Repeat to record multiple segments. Press Ctrl-c to exit the program.
+
 
 ## Example output
 
-```
-$ npm start
-
-> stopwatch@1.0.0 start stopwatch
-> tsc src/main.ts --outFile bin/stopwatch.js && node bin/stopwatch.js
-
-Press enter to start and again to stop. Press Ctrl-c to exit.
- 
-11.96s
- 
-2.06s
- 
-25.74s
- 
-9.68s
- 
-0.95s
-  
-```
+![stopwatch demo](demo.gif)
