@@ -1,5 +1,5 @@
 # Stopwatch
-> terminal stopwatch written in node.js
+> small terminal stopwatch
 
 ## Dependencies
 
@@ -16,6 +16,6 @@ $ npm start
 Press the "Enter" key to start the timer. Press "Enter" again to stop. Repeat to record multiple segments. Press Ctrl-c to exit the program.
 
 
-## Example output
+## Demo
 
 ![stopwatch demo](demo.gif)
