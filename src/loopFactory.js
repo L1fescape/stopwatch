@@ -25,8 +25,12 @@ function loopFactory(pauseForInput, updateInterval = 50) {
 
   async function loop() {
     await pauseForInput()
+
     startTime = new Date()
-    interval = setInterval(() => outputTime(startTime), updateInterval)
+    const loopFn = () => outputTime(startTime)
+    interval = setInterval(loopFn, updateInterval)
+    loopFn()
+
     await pauseForInput()
     cleanUp()
   }
