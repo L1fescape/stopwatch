@@ -20,9 +20,9 @@ async function pauseForInput() {
   await rl.question('', {
     signal: aborter.signal,
   }).catch(e => {
-    // when .abort is called it triggers .question to reject it's promise. ignore
-    // this AbortError error here since in this case it means another keybinding
-    // has triggered the stopwatch to toggle
+    // when .abort() is called it triggers rl.question() to reject it's promise.
+    // in our case this means another keybinding is trying to get the readline
+    // question to resolve. catch this and prevent further rejections.
     if (e.name !== 'AbortError') {
       throw e
     }
