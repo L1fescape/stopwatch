@@ -1,5 +1,6 @@
 const readline = require('readline/promises')
-const loopFactory = require('./../src/loopFactory')
+const stopwatch = require('../src')
+const { formatTime }= require('../src/utils')
 
 const UPDATE_INTERVAL = process.env.UPDATE_INTERVAL || 50
 const TRIGGER_KEYS = (process.env.TRIGGER_KEYS || 'space').split(',')
@@ -43,19 +44,28 @@ process.stdin.on('keypress', (_, key) => {
   }
 })
 
+function onUpdate(secs) {
+  process.stdout.clearLine(0)
+  process.stdout.cursorTo(0)
+  process.stdout.write(formatTime(secs))
+}
+
 async function main() {
-  const { loop, cleanUp } = loopFactory(pauseForInput, UPDATE_INTERVAL)
+  const { start, stop } = stopwatch(onUpdate, UPDATE_INTERVAL)
 
   process.stdout.write('Press enter or space to start and press again to stop. Press Ctrl-c to exit.\n')
 
   let shouldLoop = true
   process.on('SIGINT', function() {
     shouldLoop = false
-    cleanUp()
+    stop()
   })
 
   while (shouldLoop) {
-    await loop()
+    await pauseForInput()
+    start()
+    await pauseForInput()
+    stop()
   }
 }
 
