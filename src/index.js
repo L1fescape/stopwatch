@@ -16,8 +16,9 @@ function stopwatch(onUpdate, updateInterval = 50) {
   function start() {
     startTime = (new Date()).getTime()
     const tick = () => {
-      onUpdate(getElapsedTimeInSeconds(startTime))
+      // setup the next tick timeout first in case onUpdate is slow
       timeout = setTimeout(tick, updateInterval)
+      onUpdate(getElapsedTimeInSeconds(startTime))
     }
     tick()
   }
