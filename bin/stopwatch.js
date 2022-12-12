@@ -17,23 +17,21 @@ rl.on('SIGINT', function() {
 
 let aborter = new AbortController()
 
-async function pauseForInput() {
+async function waitForInput() {
   await rl.question('', {
     signal: aborter.signal,
   }).catch(e => {
-    // when .abort() is called it triggers rl.question() to reject it's promise.
-    // in our case this means another keybinding is trying to get the readline
-    // question to resolve. catch this and prevent further rejections.
+    // when the abort signal is triggered the rl.question promise will resolve to a
+    // rejection. catch this and don't allow it to propigate since in our scenario it's
+    // not an error (the user is closing the readline prompt with a custom keybinding). 
+    // other errors should still be thrown.
     if (e.name !== 'AbortError') {
       throw e
     }
   }).finally(() => {
-    // rather than only create a new AbortController when an AbortError has been thrown,
-    // always setup a new AbortController so we never accidentally provide one to a new
-    // question that has or will be aborted (could happen if user binds the enter key
-    // as a trigger key, which is already bound by readline and would cause the first
-    // question to resolve and the next one to receive a abort signal that is about to
-    // be aborted)
+    // always setup a new AbortController for each prompt to avoid any race conditions
+    // where .abort() is called after checking `signal.aborted` and assigning an old
+    // signal to a new prompt, causing it to automatically close
     aborter = new AbortController()
   })
 }
@@ -62,9 +60,9 @@ async function main() {
   })
 
   while (shouldLoop) {
-    await pauseForInput()
+    await waitForInput()
     start()
-    await pauseForInput()
+    await waitForInput()
     stop()
   }
 }
