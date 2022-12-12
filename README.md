@@ -15,11 +15,10 @@ $ npm start
 
 Press enter or spacebar to start the timer and press again to stop. Repeat to record multiple segments. Press Ctrl-c to exit.
 
-The keyboard bindings which trigger starting and stopping the stopwatch can be changed by providing the `TRIGGER_KEYS` argument with the desired keys as a comma separated list:
+The keyboard bindings which trigger starting and stopping the stopwatch can be changed by setting the `TRIGGER_KEYS` environment variable with the desired keys as a comma separated list:
 
 ```
-$ TRIGGER_KEYS=space,w,a,s,d npm start
-$ TRIGGER_KEYS="escape, delete" npm start
+$ TRIGGER_KEYS=space,escape,w,a,s,d npm start
 ```
 
 Note: the enter key can not be unbound as a trigger key because `readline.question` binds to it. The only way to disable this is to not use that method, which may be possible if this behavior is a problem.

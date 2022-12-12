@@ -3,7 +3,7 @@ const stopwatch = require('../src')
 const { formatTime, toOxfordComma }= require('../src/utils')
 
 const UPDATE_INTERVAL = process.env.UPDATE_INTERVAL || 50
-const TRIGGER_KEYS = (process.env.TRIGGER_KEYS || 'space').split(',').map(k => k.trim())
+const TRIGGER_KEYS = (process.env.TRIGGER_KEYS || 'space').split(',')
 
 const rl = readline.createInterface({
   input: process.stdin,
