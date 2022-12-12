@@ -1,23 +1,24 @@
-function getElapsedTimeInSeconds(startTime) {
-  const now = new Date()
-  return (now.getTime() - startTime.getTime()) / 1000
-}
+const getElapsedTimeInSeconds = (startTime) => (
+  ((new Date()).getTime() - startTime) / 1000
+)
 
 function stopwatch(onUpdate, updateInterval = 50) {
-  let interval
+  let timeout
   let startTime
 
   function stop() {
-    if (interval) {
-      clearInterval(interval)
+    if (timeout) {
+      clearTimeout(timeout)
     }
     startTime = null
   }
 
   function start() {
-    startTime = new Date()
-    const tick = () => onUpdate(getElapsedTimeInSeconds(startTime))
-    interval = setInterval(tick, updateInterval)
+    startTime = (new Date()).getTime()
+    const tick = () => {
+      onUpdate(getElapsedTimeInSeconds(startTime))
+      timeout = setTimeout(tick, updateInterval)
+    }
     tick()
   }
 
