@@ -1,9 +1,12 @@
 const readline = require('readline/promises')
-const stopwatch = require('../src')
-const { formatTime, toOxfordComma }= require('../src/utils')
+const { stopwatch, formatKeybindings, formatTime } = require('../src')
 
 const UPDATE_INTERVAL = process.env.UPDATE_INTERVAL || 50
-const TRIGGER_KEYS = (process.env.TRIGGER_KEYS || 'space').split(',')
+const TRIGGER_KEYS = (
+  (typeof process.env.TRIGGER_KEYS === 'undefined' ? 'space' : process.env.TRIGGER_KEYS) // add 'space' as a default trigger key
+    .split(',')
+    .filter(k => !!k)
+)
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -37,6 +40,10 @@ async function waitForInput() {
 }
 
 process.stdin.on('keypress', (_, key) => {
+  // ignore ctrl-c here because it will interfere with readline's SIGINT being thrown
+  if (key.name === 'c' && key.ctrl) {
+    return
+  }
   if (TRIGGER_KEYS.indexOf(key.name) > -1) {
     aborter.abort()
   }
@@ -51,8 +58,8 @@ function onUpdate(secs) {
 async function main() {
   const { start, stop } = stopwatch(onUpdate, UPDATE_INTERVAL)
 
-  const uniqueKeybinds = [...new Set(['enter'].concat(TRIGGER_KEYS))]
-  process.stdout.write(`Press ${toOxfordComma(uniqueKeybinds, 'or')} to start and press again to stop. Press Ctrl-c to exit.\n`)
+  process.stdout.write(`Press ${formatKeybindings(['enter'].concat(TRIGGER_KEYS))} to\
+ start the timer and press again to stop. Press Ctrl-c to exit.\n`)
 
   let shouldLoop = true
   process.on('SIGINT', function() {
