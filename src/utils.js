@@ -22,12 +22,19 @@ const toOxfordComma = (array, joiner = 'and') => {
   }
 }
 
-const formatKeybindings = (keybindings) => {
+const formatKeybinds = (keybindings) => {
   const uniqueKeybinds = [...new Set(keybindings)]
   return `the ${toOxfordComma(uniqueKeybinds, 'or')} key${uniqueKeybinds.length > 1 ? 's' : ''}`
 }
 
+const parseKeybindString = (keybindings) => (
+  keybindings
+    .split(',')
+    .filter(k => !!k)
+)
+
 module.exports = {
-  formatKeybindings,
+  formatKeybinds,
   formatTime,
+  parseKeybindString,
 }

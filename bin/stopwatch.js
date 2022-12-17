@@ -1,11 +1,13 @@
 const readline = require('readline/promises')
-const { stopwatch, formatKeybindings, formatTime } = require('../src')
+const { stopwatch, formatKeybinds, formatTime, parseKeybindString } = require('../src')
+
+const DEFAULT_KEY_BINDS = 'space'
 
 const UPDATE_INTERVAL = process.env.UPDATE_INTERVAL || 50
-const TRIGGER_KEYS = (
-  (typeof process.env.TRIGGER_KEYS === 'undefined' ? 'space' : process.env.TRIGGER_KEYS) // add 'space' as a default trigger key
-    .split(',')
-    .filter(k => !!k)
+const KEY_BINDS = parseKeybindString(
+  typeof process.env.KEY_BINDS !== 'undefined'
+    ? process.env.KEY_BINDS
+    : DEFAULT_KEY_BINDS
 )
 
 const rl = readline.createInterface({
@@ -44,7 +46,7 @@ process.stdin.on('keypress', (_, key) => {
   if (key.name === 'c' && key.ctrl) {
     return
   }
-  if (TRIGGER_KEYS.indexOf(key.name) > -1) {
+  if (KEY_BINDS.indexOf(key.name) > -1) {
     aborter.abort()
   }
 })
@@ -58,8 +60,8 @@ function onUpdate(secs) {
 async function main() {
   const { start, stop } = stopwatch(onUpdate, UPDATE_INTERVAL)
 
-  process.stdout.write(`Press ${formatKeybindings(['enter'].concat(TRIGGER_KEYS))} to\
- start the timer and press again to stop. Press Ctrl-c to exit.\n`)
+  process.stdout.write(`Press ${formatKeybinds(['enter'].concat(KEY_BINDS))} to\
+ start the timer and press again to stop. Press ctrl-c to exit.\n`)
 
   let shouldLoop = true
   process.on('SIGINT', function() {
@@ -70,6 +72,12 @@ async function main() {
   while (shouldLoop) {
     await waitForInput()
     start()
+    // todo(fix): this second call to `waitForInput()` clobbers the output of the initial
+    // `tick()` of the stopwatch because it calls `readline.question('')` which will
+    // clear the line via this (I think):
+    // https://github.com/nodejs/node/blob/b3f5a41ad661307d9365a53b79aae122343e38c3/lib/internal/readline/interface.js#L393-L394
+    // need to see if moving the cursor to the right before the call to `question` will
+    // fix this. this bug is only noticable when the UPDATE_INTERVAL is ~500ms or larger
     await waitForInput()
     stop()
   }

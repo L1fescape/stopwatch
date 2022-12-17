@@ -1,8 +1,9 @@
 const stopwatch = require('./stopwatch')
-const { formatKeybindings, formatTime }= require('./utils')
+const { formatKeybinds, formatTime, parseKeybindString }= require('./utils')
 
 module.exports = {
-  formatKeybindings,
+  formatKeybinds,
   formatTime,
   stopwatch,
+  parseKeybindString,
 }
