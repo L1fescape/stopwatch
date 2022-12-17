@@ -27,14 +27,17 @@ const formatKeybinds = (keybindings) => {
   return `the ${toOxfordComma(uniqueKeybinds, 'or')} key${uniqueKeybinds.length > 1 ? 's' : ''}`
 }
 
-const parseKeybindString = (keybindings) => (
-  keybindings
-    .split(',')
+const parseKeybinds = (keybinds) => {
+  if (typeof keybinds === 'string') {
+    keybinds = keybinds.split(',')
+  }
+  return keybinds
+    .map(k => k.trim())
     .filter(k => !!k)
-)
+}
 
 module.exports = {
   formatKeybinds,
   formatTime,
-  parseKeybindString,
+  parseKeybinds,
 }

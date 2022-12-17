@@ -23,8 +23,6 @@ $ KEY_BINDS=escape,w,a,s,d npm start
 
 Behind the scenes this script is using `process.stdin.on('keypress', (chunk, key) => {})` to listen for keypress events. If there's a key you're defining in `KEY_BINDS` that's not working either check out how [readline defines the key names](https://github.com/nodejs/node/blob/5fad0b93667ffc6e4def52996b9529ac99b26319/lib/internal/readline/utils.js#L213-L312) or raise an issue and I can take a look.
 
-Note: the enter key can not be unbound as a trigger key because `readline.question` binds to it. The only way to disable this is to not use that method, which may be possible to implement if this behavior is a problem. It's not an issue at the moment.
-
 ## Demo
 
 ![stopwatch demo](demo.gif)
